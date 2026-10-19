@@ -14,19 +14,19 @@ int main(void)
     t_arbre a;
 
     // lecture de l'arbre décrit dans un fichier texte
-    a = readTree("data/exemple1.txt");
+    a = readTree("data/arbre_petit.txt");
 
     // affichage console de tous ses rameaux
     displayTree(a);
 
     // dessin de profil, à ouvrir dans un navigateur web
-    drawSvg(a.pied, "output/exemple1.svg");
+    drawSvg(a.pied, "output/arbre_petit.svg");
 
     // animation de la pousse, saison par saison (0.5 s par saison)
-    animateSvg(a.pied, "output/exemple1_animation.svg", 0.5);
+    animateSvg(a.pied, "output/arbre_petit.svg", 0.5);
 
     // trois vues interactives : arbres informatiques et arbre de rameaux
-    drawHtml(a.pied, "output/exemple1.html");
+    drawHtml(a.pied, "output/arbre_petit.html");
 
     return 0;
 }
