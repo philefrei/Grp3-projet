@@ -10,24 +10,26 @@
 // étape 4 : sauvegarde de l'arbre a dans le fichier texte nom_fichier
 // la sauvegarde doit être effectuée par un PARCOURS EN LARGEUR de l'arbre (file de rameaux, voir queue.h) :
 // c'est l'ordre que readTree attend pour relire le fichier
+
+
 void saveTree(t_arbre a, char *nom_fichier)
 {
     // ouverture du fichier en écriture, en mode texte (fourni, à ne pas modifier)
     FILE *f = fopen(nom_fichier, "wt");
     if (f == NULL)
     {
-        perror("Impossible de creer le fichier");
+        printf("Impossible de creer le fichier\n");
         return;
     }
-
     fprintf(f, "%.2f %.2f\n", a.pied->x, a.pied->y);
+    t_queue q;
+    t_rameau *r;
 
-    t_queue q = createEmptyQueue();
+    q = createEmptyQueue();
     enqueue(&q, a.pied);
-
-    while (!isEmptyQueue(q))
+    while (isEmptyQueue(q)==0)
     {
-        t_rameau *r = dequeue(&q);
+        r = dequeue(&q);
 
         for (int i = 0; i < r->nb_fils; i++)
         {
@@ -40,3 +42,4 @@ void saveTree(t_arbre a, char *nom_fichier)
     }
     fclose(f);
 }
+
