@@ -62,24 +62,24 @@ void growBud(t_arbre *a, t_rameau *b, int n, int saison)
         // 2. on crée les fils un par un
         for (int i = 0; i < n; i++)
         {
-            float dir;        // direction du nouveau rameau
-            float longueur;   // longueur du nouveau rameau
+            float dir;
+            float longueur;
 
             if (i == 0)
             {
-                // 1er fils : il prolonge le parent (petit écart de -10° à +10°)
+                // 1er fils : il prolonge le parent
                 dir = b->dir + randomBetween(-10, 10);
                 longueur = randomBetween(0.7, 1.3);
             }
             else
             {
-                // fils suivants : à gauche ou à droite, de 30° à 60°
-                int cote = randomInt(2);               // 0 = gauche, 1 = droite
+                // à gauche ou à droite, de 30° à 60°
+                int cote = randomInt(2);
                 float angle = randomBetween(30, 60);
                 if (cote == 0)
-                    dir = b->dir - angle;              // gauche : la direction diminue
+                    dir = b->dir - angle;              // gauche baisse
                 else
-                    dir = b->dir + angle;              // droite : la direction augmente
+                    dir = b->dir + angle;              // droite augmente
                 longueur = randomBetween(0.7, 1.3);
             }
 
@@ -108,24 +108,22 @@ void growTree(t_arbre *a, int nbSaisons)
         {
             t_rameau *b = dequeue(&F);           // on sort un bourgeon de F
 
-            if (canGrow(95))                      // il pousse (95 % des cas)
+            if (canGrow(95))                      // il pousse (95 %
             {
                 int n = howManyBranches(70, 25);  // combien de fils ?
-                growBud(a, b, n, saison);         // on les crée
+                growBud(a, b, n, saison);
                 for (int i = 0; i < n; i++)
                     enqueue(&G, b->p_fils[i]);    // ses fils iront à la saison suivante
             }
-            else                                  // il ne pousse pas (5 %)
+            else                                  // pousse pas
             {
-                enqueue(&G, b);                   // il reste bourgeon et réessaiera
+                enqueue(&G, b);                   //  reste bourgeon
             }
         }
 
-        // fin de saison : G devient F
         F = G;
     }
 
-    // après la dernière saison, on vide F (dequeue libère la mémoire de la file)
     while (!isEmptyQueue(F))
         dequeue(&F);
 }
