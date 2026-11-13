@@ -103,3 +103,103 @@ double getLight(t_foret *f, t_rameau *r)
 {
     return f->lumiere[rowOf(f, r->y)][columnOf(f, r->x)];
 }
+
+// etape 6 fait par mael
+void plantForest(t_foret *f, int seed, int identique)
+{
+    int i;
+    float x;
+    float y;
+    for (i = 0; i < f->K; i++)
+    {
+        x = i * f->E + f->E / 2.0;
+        f->arbres[i] = createForestTree(i, x, 1, seed);
+    }
+    randomInit(seed);
+    if (identique == 0)
+    {
+        for (i = 0; i < f->K; i++)
+        {
+            y = randomBetween(0.5, 1.5);
+            f->arbres[i].step.arbre.pied->y = y;
+            f->arbres[i].step.arbre.pied->longueur = y;
+            f->arbres[i].cime = y;
+        }
+    }
+    for (i = 0; i < f->K; i++)
+    {
+        addToGrid(f, f->arbres[i].step.arbre.pied);
+    }
+}
+void growSeasonInForest(t_foret *f, t_arbre_foret *a)
+{
+    t_queue G;
+    t_rameau *b;
+    int n;
+    int i;
+    double L;
+    a->step.saison = a->step.saison + 1;
+    if (a->tronque == 0)
+    {
+        G = createEmptyQueue();
+        while (!isEmptyQueue(a->step.bourgeons))
+        {
+            b = dequeue(&a->step.bourgeons);
+            L = getLight(f, b);
+            if (canGrowInLight(L))
+            {
+                n = howManyBranchesInLight(L);
+                growBudInLight(a, b, n, L);
+                for (i = 0; i < n; i++)
+                {
+                    addToGrid(f, b->p_fils[i]);
+                    enqueue(&G, b->p_fils[i]);
+                }
+            }
+            else
+            {
+                enqueue(&G, b);
+            }
+        }
+        a->step.bourgeons = G;
+        if (a->step.arbre.nb_rameaux >= f->P_max)
+        {
+            a->tronque = 1;
+        }
+    }
+}
+void growForestSeason(t_foret *f)
+{
+    int k;
+    computeLight(f);
+    for (k = 0; k < f->K; k++)
+    {
+        growSeasonInForest(f, &f->arbres[k]);
+    }
+    f->saison = f->saison + 1;
+}
+void simulateForest(t_foret *f, int S)
+{
+    int s;
+    for (s = 0; s < S; s++)
+    {
+        growForestSeason(f);
+    }
+}
+void freeForest(t_foret *f)
+{
+    int k;
+    int r;
+    for (k = 0; k < f->K; k++)
+    {
+        freeForestTree(&f->arbres[k]);
+    }
+    free(f->arbres);
+    for (r = 0; r < f->HMAX; r++)
+    {
+        free(f->occupation[r]);
+        free(f->lumiere[r]);
+    }
+    free(f->occupation);
+    free(f->lumiere);
+}
