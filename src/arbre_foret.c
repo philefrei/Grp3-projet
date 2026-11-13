@@ -230,6 +230,7 @@ void growBudInLight(t_arbre_foret *a, t_rameau *b, int n, double lumiere)
     a->nb_bourgeons = a->nb_bourgeons + n - 1;
 }
 
+
 void growSeason(t_arbre_foret *a, double lumiere)
 {
     t_queue G;
