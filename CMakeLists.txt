@@ -19,7 +19,8 @@ add_executable(foret
         src/sauver_arbre.c include/sauver_arbre.h
         utils/src/arbres_utils.c utils/include/arbres_utils.h
         utils/src/dessin.c utils/include/dessin.h
-        utils/src/alea.c utils/include/alea.h)
+        utils/src/alea.c utils/include/alea.h
+        include/arbre_foret.h)
 
 # étape 1 : prise en main de l'environnement (lire, afficher, dessiner, animer un arbre)
 add_executable(etape_1
@@ -27,7 +28,8 @@ add_executable(etape_1
         src/arbre.c include/arbre.h
         utils/src/arbres_utils.c utils/include/arbres_utils.h
         utils/src/dessin.c utils/include/dessin.h
-        utils/src/alea.c utils/include/alea.h)
+        utils/src/alea.c utils/include/alea.h
+        include/arbre_foret.h)
 
 # étape 2 : la pousse d'un arbre en pleine lumière (fonctions de croissance, file de rameaux)
 add_executable(etape_2
@@ -37,7 +39,8 @@ add_executable(etape_2
         src/croissance.c include/croissance.h
         utils/src/arbres_utils.c utils/include/arbres_utils.h
         utils/src/dessin.c utils/include/dessin.h
-        utils/src/alea.c utils/include/alea.h)
+        utils/src/alea.c utils/include/alea.h
+        include/arbre_foret.h)
 
 # étape 4 : sauvez les arbres ! (sauvegarde d'un arbre dans un fichier, par un parcours en largeur)
 add_executable(etape_4
@@ -47,7 +50,8 @@ add_executable(etape_4
         src/croissance.c include/croissance.h
         src/sauver_arbre.c include/sauver_arbre.h
         utils/src/arbres_utils.c utils/include/arbres_utils.h
-        utils/src/alea.c utils/include/alea.h)
+        utils/src/alea.c utils/include/alea.h
+        include/arbre_foret.h)
 
 # réglages communs à toutes les cibles
 foreach (cible foret etape_1 etape_2 etape_4)
