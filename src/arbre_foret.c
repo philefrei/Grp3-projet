@@ -162,4 +162,71 @@ void freeForestTree(t_arbre_foret *a)
     a->step.arbre.pied = NULL;
 }
 
+void growBudInLight(t_arbre_foret *a, t_rameau *b, int n, double lumiere)
+{
+    int i;
+    int cote;
+    float angle;
+    float dir;
+    double u;
+    float longueur;
+    t_rameau *fils;
+
+    // on cree le tableau des fils : n cases
+    b->p_fils = malloc(n * sizeof(t_rameau *));
+
+    for (i = 0; i < n; i++)
+    {
+        if (i == 0)
+        {
+            // 1er rameau : il prolonge le parent
+            dir = b->dir + randomBetween(-10, 10);
+        }
+        else
+        {
+            // rameaux suivants : a gauche ou a droite
+            cote = randomInt(2);
+            angle = randomBetween(30, 60);
+
+            if (cote == 0)
+            {
+                dir = b->dir - angle;
+            }
+            else
+            {
+                dir = b->dir + angle;
+            }
+        }
+
+        // longueur : plus courte a l'ombre
+        u = randomBetween(0.7, 1.3);
+        longueur = (0.5 + 0.5 * lumiere) * u;
+
+        dir = clampDirection(dir);
+        fils = growBranch(&a->step.arbre, b, a->step.saison, dir, longueur);
+        b->p_fils[i] = fils;
+
+        // mise a jour des mesures avec le nouveau rameau
+        if (fils->gen > a->hauteur)
+        {
+            a->hauteur = fils->gen;
+        }
+        if (fils->y > a->cime)
+        {
+            a->cime = fils->y;
+        }
+        if (fils->x < a->xmin)
+        {
+            a->xmin = fils->x;
+        }
+        if (fils->x > a->xmax)
+        {
+            a->xmax = fils->x;
+        }
+    }
+    b->nb_fils = n;
+
+    // b devient du bois (-1 bourgeon) et ses n fils sont des bourgeons (+n)
+    a->nb_bourgeons = a->nb_bourgeons + n - 1;
+}
 
