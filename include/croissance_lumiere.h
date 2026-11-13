@@ -21,5 +21,5 @@ int drawFromTable(float pourcentages[], int n);
 int canGrowInLight(double lumiere);
 
 /* ---------------------------------------------------------------- à compléter : vos prototypes, à partir d'ici */
-
+int howManyBranchesInLight(double lumiere);
 #endif //FORET_CROISSANCE_LUMIERE_H

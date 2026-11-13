@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "arbre_foret.h"
 #include "croissance.h"
+#include "croissance_lumiere.h"
 
 
 float clampDirection(float);
