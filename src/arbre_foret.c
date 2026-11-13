@@ -230,3 +230,36 @@ void growBudInLight(t_arbre_foret *a, t_rameau *b, int n, double lumiere)
     a->nb_bourgeons = a->nb_bourgeons + n - 1;
 }
 
+void growSeason(t_arbre_foret *a, double lumiere)
+{
+    t_queue G;
+    t_rameau *b;
+    int n;
+    int i;
+
+    G = createEmptyQueue();
+
+    // nouvelle saison : les nouveaux rameaux portent ce numero
+    a->step.saison = a->step.saison + 1;
+
+    while (!isEmptyQueue(a->step.bourgeons))
+    {
+        b = dequeue(&a->step.bourgeons);
+
+        if (canGrowInLight(lumiere))
+        {
+            n = howManyBranchesInLight(lumiere);
+            growBudInLight(a, b, n, lumiere);
+
+            for (i = 0; i < n; i++)
+            {
+                enqueue(&G, b->p_fils[i]);
+            }
+        }
+        else
+        {
+            enqueue(&G, b);    // il reste bourgeon
+        }
+    }
+    a->step.bourgeons = G;
+}
