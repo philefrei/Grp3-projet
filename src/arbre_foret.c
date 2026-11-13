@@ -167,7 +167,7 @@ void growBudInLight(t_arbre_foret *a, t_rameau *b, int n, double lumiere)
 {
     int i;
     int cote;
-    float angle;
+    double angle;    // double et pas float : sinon un arrondi de trop décale certaines directions de 0,01
     float dir;
     double u;
     float longueur;
