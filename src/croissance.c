@@ -50,80 +50,75 @@ int howManyBranches(float p1, float p2)
 
 void growBud(t_arbre *a, t_rameau *b, int n, int saison)
 {
-        // 1. on réserve un tableau de n cases pour ranger les fils
-        b->p_fils = malloc(n * sizeof(t_rameau *));
-        if (b->p_fils == NULL)
+    int i;
+    int cote;
+    float angle;
+    float dir;
+    float longueur;
+
+    // on cree le tableau des fils : n cases
+    b->p_fils = malloc(n * sizeof(t_rameau*));
+
+    for (i = 0; i < n; i++)
+    {
+        if (i == 0)
         {
-            perror("growBud");
-            exit(EXIT_FAILURE);
+            // 1er rameau : il prolonge le parent
+            dir = b->dir + randomBetween(-10, 10);
+            longueur = randomBetween(0.7, 1.3);
         }
-        b->nb_fils = n;
-
-        // 2. on crée les fils un par un
-        for (int i = 0; i < n; i++)
+        else
         {
-            float dir;
-            float longueur;
+            // rameaux suivants : a gauche ou a droite
+            cote = randomInt(2);
+            angle = randomBetween(30, 60);
 
-            if (i == 0)
+            if (cote == 0)
             {
-                // 1er fils : il prolonge le parent
-                dir = b->dir + randomBetween(-10, 10);
-                longueur = randomBetween(0.7, 1.3);
+                dir = b->dir - angle;
             }
             else
             {
-                // à gauche ou à droite, de 30° à 60°
-                int cote = randomInt(2);
-                float angle = randomBetween(30, 60);
-                if (cote == 0)
-                    dir = b->dir - angle;              // gauche baisse
-                else
-                    dir = b->dir + angle;              // droite augmente
-                longueur = randomBetween(0.7, 1.3);
+                dir = b->dir + angle;
             }
 
-            // 3. on bloque la direction entre -80° et +80°
-            dir = clampDirection(dir);
-
-            // 4. on crée le rameau et on le range dans la case i
-            b->p_fils[i] = growBranch(a, b, saison, dir, longueur);
+            longueur = randomBetween(0.7, 1.3);
         }
+
+        // on ramene la direction entre -80 et 80 avec clampDirection (deja donné)
+        dir = clampDirection(dir);
+        b->p_fils[i] = growBranch(a, b, saison, dir, longueur);
     }
+    b->nb_fils = n;
+}
 
 
-void growTree(t_arbre *a, int nbSaisons)
-{
-    // au départ, F contient seulement le pied
+void growTree(t_arbre *a, int nbSaisons){
+    if (a == NULL || a->pied == NULL) {
+        return;
+    }
+    // F saison courante G saison suivante
     t_queue F = createEmptyQueue();
+    t_queue G = createEmptyQueue();
+    //racine de l'arbre
     enqueue(&F, a->pied);
+    for (int i = 0; i < nbSaisons; i++) {
+        G = createEmptyQueue(); // on remet G à 0 à chaque nouvelle saison
+        while (!isEmptyQueue(F)) {
+            t_rameau *b = dequeue(&F); // dépilement
+            if (canGrow(95)) { // test pousse bourgeon
+                int n;
+                n = howManyBranches(70, 25);
+                growBud(a, b, n, i + 1);
+                for (int j = 0; j < n ; j++) {
+                    enqueue(&G, b->p_fils[j]);
+                }
 
-    for (int saison = 1; saison <= nbSaisons; saison++)
-    {
-        // début de saison : G est vide
-        t_queue G = createEmptyQueue();
-
-        // on vide F, un bourgeon à la fois
-        while (!isEmptyQueue(F))
-        {
-            t_rameau *b = dequeue(&F);           // on sort un bourgeon de F
-
-            if (canGrow(95))                      // il pousse (95 %
-            {
-                int n = howManyBranches(70, 25);  // combien de fils ?
-                growBud(a, b, n, saison);
-                for (int i = 0; i < n; i++)
-                    enqueue(&G, b->p_fils[i]);    // ses fils iront à la saison suivante
-            }
-            else                                  // pousse pas
-            {
-                enqueue(&G, b);                   //  reste bourgeon
-            }
+            } else enqueue(&G,b); // erreur de la pousse du bourgeon
         }
-
         F = G;
     }
-
-    while (!isEmptyQueue(F))
+    while (!isEmptyQueue(F)) {
         dequeue(&F);
+    }
 }
