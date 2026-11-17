@@ -299,3 +299,87 @@ void histoToSVG(int effectifs[], int nb_classes, double min, double largeur, con
 }
 
 /* ---------------------------------------------------------------- à compléter : vos fonctions, à partir d'ici */
+
+int *computeHistogram(double v[], int n, int nb_classes, double *p_min, double *p_largeur)
+{
+    int *effectifs;
+    double min, max, largeur;
+    int i, classe;
+
+    effectifs = malloc(nb_classes * sizeof(int));
+    for (i = 0; i < nb_classes; i++)
+    {
+        effectifs[i] = 0;
+    }
+
+    min = v[0];
+    max = v[0];
+    for (i = 1; i < n; i++)
+    {
+        if (v[i] < min)
+        {
+            min = v[i];
+        }
+        if (v[i] > max)
+        {
+            max = v[i];
+        }
+    }
+    largeur = (max - min) / nb_classes;
+
+    for (i = 0; i < n; i++)
+    {
+        if (largeur == 0)
+        {
+            classe = 0;                         // toutes les valeurs sont égales
+        }
+        else
+        {
+            classe = (int) ((v[i] - min) / largeur);
+            if (classe >= nb_classes)
+            {
+                classe = nb_classes - 1;        // le maximum va dans la dernière classe
+            }
+        }
+        effectifs[classe]++;
+    }
+
+    *p_min = min;
+    *p_largeur = largeur;
+    return effectifs;
+}
+
+void displayHistogram(int effectifs[], int nb_classes, double min, double largeur)
+{
+    int plus_grand = 0;
+    int longueur;
+    int i, j;
+
+    for (i = 0; i < nb_classes; i++)
+    {
+        if (effectifs[i] > plus_grand)
+        {
+            plus_grand = effectifs[i];
+        }
+    }
+
+    for (i = 0; i < nb_classes; i++)
+    {
+        if (plus_grand == 0)
+        {
+            longueur = 0;
+        }
+        else
+        {
+            longueur = (int) ((double) effectifs[i] * 50 / plus_grand + 0.5);
+        }
+
+        printf("[%9.3f ; %9.3f%c %6d ", min + i * largeur, min + (i + 1) * largeur,
+               (i == nb_classes - 1) ? ']' : '[', effectifs[i]);
+        for (j = 0; j < longueur; j++)
+        {
+            printf("#");
+        }
+        printf("\n");
+    }
+}
