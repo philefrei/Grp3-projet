@@ -7,7 +7,13 @@
 
 #include "arbre.h"
 
-// écrit l'arbre a dans le fichier texte nom_fichier, par un parcours en largeur (format décrit dans le sujet, étape 4)
+/***
+ * @brief écrit l'arbre dans un fichier texte par un parcours en largeur : la position du pied,
+ *        puis une ligne par rameau (numéro, saison, numéro du parent, direction, longueur, génération, état) ;
+ *        le fichier se relit avec readTree
+ * @param a : l'arbre à sauvegarder
+ * @param nom_fichier : nom du fichier à créer
+ */
 void saveTree(t_arbre a, char *nom_fichier);
 
 #endif //FORET_SAUVER_ARBRE_H

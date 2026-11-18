@@ -28,6 +28,14 @@ void freeBranches(t_rameau *r);
 t_arbre_foret createForestTree(int id, float x, float y, int seed);
 void freeForestTree(t_arbre_foret *a);
 
+/***
+ * @brief comme growBud, mais la longueur des rameaux dépend de la lumière : (0,5 + 0,5 L) × u ;
+ *        met à jour les mesures de l'arbre (hauteur, cime, xmin, xmax, nombre de bourgeons)
+ * @param a : l'arbre de la forêt
+ * @param b : le bourgeon qui pousse
+ * @param n : nombre de rameaux à créer (1 à 3)
+ * @param lumiere : lumière reçue par le bourgeon, entre 0 et 1
+ */
 void growBudInLight(t_arbre_foret *a, t_rameau *b, int n, double lumiere);
 void growSeason(t_arbre_foret *a, double lumiere);
 
