@@ -17,10 +17,11 @@ add_executable(foret
         src/croissance.c include/croissance.h
         src/croissance_step.c include/croissance_step.h
         src/sauver_arbre.c include/sauver_arbre.h
+        src/arbre_foret.c include/arbre_foret.h
+        src/croissance_lumiere.c include/croissance_lumiere.h
         utils/src/arbres_utils.c utils/include/arbres_utils.h
         utils/src/dessin.c utils/include/dessin.h
-        utils/src/alea.c utils/include/alea.h
-        include/arbre_foret.h)
+        utils/src/alea.c utils/include/alea.h)
 
 # étape 1 : prise en main de l'environnement (lire, afficher, dessiner, animer un arbre)
 add_executable(etape_1
