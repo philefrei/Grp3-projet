@@ -8,6 +8,7 @@
 #include "croissance.h"
 #include "croissance_step.h"
 #include "sauver_arbre.h"
+#include "arbre_foret.h"
 
 int main(void)
 {
@@ -24,5 +25,8 @@ int main(void)
     printf("growTree : %d rameaux\n", a.nb_rameaux);
     printf("growTreeStep : %d rameaux\n", s.arbre.nb_rameaux);
 
+    // libération de tous les rameaux des deux arbres
+    freeBranches(a.pied);
+    freeBranches(s.arbre.pied);
     return 0;
 }
