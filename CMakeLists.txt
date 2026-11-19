@@ -10,6 +10,11 @@ project(foret C)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
+# mêmes arrondis sur tous les ordinateurs : pas de fusion a + b * c (FMA) sur les processeurs ARM (Mac M1, M2...)
+if (NOT MSVC)
+    add_compile_options(-ffp-contract=off)
+endif ()
+
 add_executable(foret
         src/main.c
         src/arbre.c include/arbre.h
