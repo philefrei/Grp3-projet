@@ -86,6 +86,25 @@ void displaySummary(double v[], int n);
 void histoToSVG(int effectifs[], int nb_classes, double min, double largeur, const char *titre, const char *nom_fichier);
 
 /* ---------------------------------------------------------------- à compléter : vos prototypes, à partir d'ici */
+/***
+* @brief découpe [minimum ; maximum] en classes de même largeur et compte les valeurs de chaque classe ;
+*        le maximum va dans la dernière classe ; si toutes les valeurs sont égales, tout va dans la première
+* @param v : valeurs
+* @param n : nombre de valeurs (au moins 1)
+* @param nb_classes : nombre de classes (au moins 1)
+* @param p_min : reçoit le minimum des valeurs
+* @param p_largeur : reçoit la largeur d'une classe
+* @return un tableau dynamique des nb_classes effectifs, à libérer avec free
+*/
 int *computeHistogram(double v[], int n, int nb_classes, double *p_min, double *p_largeur);
+
+/***
+* @brief affiche une ligne par classe : ses bornes, son effectif et une barre de # ;
+*        la classe la plus remplie a 50 #, les autres une barre proportionnelle arrondie
+* @param effectifs : effectif de chaque classe
+* @param nb_classes : nombre de classes
+* @param min : borne gauche de la première classe
+* @param largeur : largeur d'une classe
+*/
 void displayHistogram(int effectifs[], int nb_classes, double min, double largeur);
 #endif //FORET_STATISTIQUES_H
