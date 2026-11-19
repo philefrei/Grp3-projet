@@ -21,5 +21,11 @@ int drawFromTable(float pourcentages[], int n);
 int canGrowInLight(double lumiere);
 
 /* ---------------------------------------------------------------- à compléter : vos prototypes, à partir d'ici */
+/***
+ 
+@brief tire le nombre de rameaux d'un bourgeon selon la lumière :
+L >= 0,7 : {70, 25, 5} % ; L >= 0,4 : {85, 15} % ; sinon 1 rameau
+@param lumiere : lumière reçue, entre 0 et 1
+@return 1, 2 ou 3*/
 int howManyBranchesInLight(double lumiere);
 #endif //FORET_CROISSANCE_LUMIERE_H
