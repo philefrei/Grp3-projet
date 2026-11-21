@@ -16,31 +16,6 @@ typedef struct s_arbre_foret
     int tronque;          // 1 si l'arbre a atteint P_max rameaux
 } t_arbre_foret;
 
-
-/***
-* @brief découpe [minimum ; maximum] en classes de même largeur et compte les valeurs de chaque classe ;
-*        le maximum va dans la dernière classe ; si toutes les valeurs sont égales, tout va dans la première
-* @param v : valeurs
-* @param n : nombre de valeurs (au moins 1)
-* @param nb_classes : nombre de classes (au moins 1)
-* @param p_min : reçoit le minimum des valeurs
-* @param p_largeur : reçoit la largeur d'une classe
-* @return un tableau dynamique des nb_classes effectifs, à libérer avec free
-*/
-int *computeHistogram(double v[], int n, int nb_classes, double *p_min, double *p_largeur);
-
-/***
-* @brief affiche une ligne par classe : ses bornes, son effectif et une barre de # ;
-*        la classe la plus remplie a 50 #, les autres une barre proportionnelle arrondie
-* @param effectifs : effectif de chaque classe
-* @param nb_classes : nombre de classes
-* @param min : borne gauche de la première classe
-* @param largeur : largeur d'une classe
-*/
-void displayHistogram(int effectifs[], int nb_classes, double min, double largeur);
-/*** * @brief compte récursivement les ra... par Philéas ELOI
-Philéas ELOI
-16:17
 /***
 * @brief compte récursivement les rameaux du sous-arbre de r
 * @param r : rameau de départ (le pied pour tout l'arbre)
@@ -104,6 +79,16 @@ t_arbre_foret createForestTree(int id, float x, float y, int seed);
 * @param a : l'arbre de la forêt
 */
 void freeForestTree(t_arbre_foret *a);
+
+/***
+* @brief comme growBud, mais la longueur des rameaux dépend de la lumière : (0,5 + 0,5 L) × u ;
+*        met à jour les mesures de l'arbre (hauteur, cime, xmin, xmax, nombre de bourgeons)
+* @param a : l'arbre de la forêt
+* @param b : le bourgeon qui pousse
+* @param n : nombre de rameaux à créer (1 à 3)
+* @param lumiere : lumière reçue par le bourgeon, entre 0 et 1
+*/
+void growBudInLight(t_arbre_foret *a, t_rameau *b, int n, double lumiere);
 
 /***
 * @brief fait pousser l'arbre d'une saison, tous ses bourgeons recevant la même lumière
